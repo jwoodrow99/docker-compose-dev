@@ -1,0 +1,99 @@
+version: '3.8'
+services:
+  mariadb:
+    image: mariadb:10.11.5
+    container_name: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./volumes/mariadb:/var/lib/mysql
+    environment:
+      - MARIADB_USER=user
+      - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=general
+
+  # mysql:
+  #   image: mysql:8.1.0
+  #   container_name: mysql
+  #   restart: always
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./volumes/mariadb:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=password
+  #     - MYSQL_USER=user
+  #     - MYSQL_PASSWORD=password
+  #     - MYSQL_DATABASE=general
+
+  pgsql:
+    image: postgres:16.0
+    container_name: pgsql
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/pgsql:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=general
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+  redis:
+    image: redis:7.2.1
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./volumes/redis:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+  neo4j:
+    image: neo4j:4.4.26
+    container_name: neo4j
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ./volumes/neo4j:/data
+    environment:
+      - NEO4J_AUTH=none
+
+  cassandra:
+    image: cassandra:4.1.3
+    container_name: cassandra
+    restart: always
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./volumes/cassandra:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=cluster
+
+  surrealdb:
+    image: surrealdb/surrealdb:1.0.0
+    container_name: surrealdb
+    restart: always
+    command: start --user user --pass password file:/data/database.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./volumes/surrealdb:/data
+    
